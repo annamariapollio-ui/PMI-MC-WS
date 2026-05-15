@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MC Acquisition Workshop — June 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --mc-dark: #2d2f3e;
+    --mc-darker: #1e2030;
+    --mc-cyan: #00b4d8;
+    --mc-cyan-bright: #0ef;
+    --mc-cyan-soft: #17c3e0;
+    --mc-teal: #0e8fa0;
+    --mc-blue: #2a4a8a;
+    --mc-navy: #1a3060;
+    --mc-purple: #6a4fa0;
+    --mc-magenta: #b83d8a;
+    --mc-light: #f0f4f8;
+    --mc-white: #ffffff;
+    --mc-gray-text: #a0aec0;
+    --mc-border: rgba(255,255,255,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--mc-darker);
+    color: var(--mc-white);
+    min-height: 100vh;
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    background: var(--mc-dark);
+    padding: 64px 48px 56px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--mc-border);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    right: -60px;
+    top: -40px;
+    width: 520px;
+    height: 520px;
+    background: conic-gradient(
+      from 200deg,
+      transparent 0deg,
+      rgba(0,180,216,0.18) 30deg,
+      rgba(42,74,138,0.22) 80deg,
+      rgba(14,143,160,0.2) 130deg,
+      rgba(106,79,160,0.15) 180deg,
+      rgba(184,61,138,0.12) 230deg,
+      transparent 280deg
+    );
+    border-radius: 50%;
+    animation: spin 40s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .hero-mosaic {
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 340px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(6, 1fr);
+    gap: 6px;
+    padding: 24px;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .mosaic-tile {
+    border-radius: 6px;
+    transform: rotate(var(--r));
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 700px; }
+
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0,180,216,0.15);
+    border: 1px solid rgba(0,180,216,0.35);
+    border-radius: 24px;
+    padding: 6px 16px;
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--mc-cyan);
+    font-weight: 500;
+    margin-bottom: 24px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--mc-cyan);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .hero h1 {
+    font-family: 'Outfit', sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+
+  .hero h1 span { color: var(--mc-cyan); }
+
+  .hero-sub {
+    font-size: 15px;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 36px;
+    max-width: 540px;
+    line-height: 1.6;
+    font-weight: 300;
+  }
+
+  .hero-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .hero-pill {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--mc-border);
+    border-radius: 12px;
+    padding: 10px 18px;
+  }
+
+  .pill-icon {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    background: rgba(0,180,216,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+
+  .pill-label { font-size: 11px; color: var(--mc-gray-text); text-transform: uppercase; letter-spacing: 0.07em; }
+  .pill-value { font-size: 14px; font-weight: 600; color: var(--mc-white); }
+
+  /* MC logo accent */
+  .mc-logo-mark {
+    position: absolute;
+    bottom: 28px;
+    right: 48px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 2;
+  }
+
+  .mc-dots {
+    display: grid;
+    grid-template-columns: repeat(3,8px);
+    grid-template-rows: repeat(3,8px);
+    gap: 3px;
+  }
+
+  .mc-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+  }
+
+  .mc-wordmark {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--mc-white);
+    letter-spacing: 0.05em;
+  }
+
+  /* ─── NAVIGATION ─── */
+  nav {
+    background: rgba(30,32,48,0.95);
+    border-bottom: 1px solid var(--mc-border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(12px);
+  }
+
+  .nav-inner {
+    display: flex;
+    gap: 0;
+    padding: 0 48px;
+    overflow-x: auto;
+  }
+
+  .nav-tab {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 24px;
+    font-size: 13px;
+    font-weight: 500;
+    color: rgba(255,255,255,0.5);
+    cursor: pointer;
+    border-bottom: 2.5px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    letter-spacing: 0.03em;
+  }
+
+  .nav-tab:hover { color: rgba(255,255,255,0.8); }
+
+  .nav-tab.active {
+    color: var(--mc-cyan);
+    border-bottom-color: var(--mc-cyan);
+  }
+
+  .tab-icon { font-size: 15px; }
+
+  /* ─── CONTENT ─── */
+  .content { padding: 40px 48px; max-width: 1100px; }
+
+  .section { display: none; }
+  .section.active { display: block; }
+
+  .section-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .section-desc {
+    font-size: 14px;
+    color: var(--mc-gray-text);
+    margin-bottom: 32px;
+    line-height: 1.5;
+  }
+
+  /* ─── PARTICIPANTS ─── */
+  .region-group { margin-bottom: 36px; }
+
+  .region-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mc-cyan);
+    font-weight: 600;
+    margin-bottom: 14px;
+    padding-left: 2px;
+    border-left: 3px solid var(--mc-cyan);
+    padding-left: 10px;
+  }
+
+  .participants-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+  }
+
+  .participant-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--mc-border);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: background 0.2s, border-color 0.2s;
+  }
+
+  .participant-card:hover {
+    background: rgba(0,180,216,0.07);
+    border-color: rgba(0,180,216,0.3);
+  }
+
+  .avatar {
+    width: 44px; height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Outfit', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: 0.03em;
+  }
+
+  .p-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mc-white);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+
+  .p-role {
+    font-size: 11.5px;
+    color: var(--mc-gray-text);
+    line-height: 1.4;
+  }
+
+  .p-market-flag {
+    font-size: 18px;
+    margin-left: auto;
+    flex-shrink: 0;
+  }
+
+  .status-badge {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 6px;
+    margin-top: 4px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+  }
+
+  .confirmed { background: rgba(0,180,216,0.15); color: var(--mc-cyan); border: 1px solid rgba(0,180,216,0.25); }
+  .represented { background: rgba(106,79,160,0.2); color: #a78bfa; border: 1px solid rgba(106,79,160,0.3); }
+
+  /* ─── AGENDA ─── */
+  .day-filter {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+  }
+
+  .day-btn {
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: 1px solid var(--mc-border);
+    background: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.55);
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .day-btn:hover {
+    background: rgba(255,255,255,0.08);
+    color: var(--mc-white);
+  }
+
+  .day-btn.active {
+    background: rgba(0,180,216,0.18);
+    border-color: rgba(0,180,216,0.5);
+    color: var(--mc-cyan);
+  }
+
+  .day-btn .btn-date {
+    display: block;
+    font-size: 10px;
+    opacity: 0.7;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .day-content { display: none; }
+  .day-content.active { display: block; }
+
+  .day-header {
+    background: linear-gradient(135deg, rgba(0,180,216,0.12) 0%, rgba(42,74,138,0.12) 100%);
+    border: 1px solid rgba(0,180,216,0.2);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .day-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--mc-white);
+  }
+
+  .day-theme {
+    font-size: 13px;
+    color: var(--mc-cyan);
+    margin-top: 4px;
+    font-style: italic;
+  }
+
+  .session-list { display: flex; flex-direction: column; gap: 8px; }
+
+  .session-item {
+    display: flex;
+    align-items: stretch;
+    gap: 16px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--mc-border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    transition: background 0.2s;
+  }
+
+  .session-item:hover { background: rgba(255,255,255,0.06); }
+
+  .session-time {
+    min-width: 80px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--mc-cyan);
+    padding-top: 1px;
+    flex-shrink: 0;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .session-divider {
+    width: 1px;
+    background: var(--mc-border);
+    flex-shrink: 0;
+  }
+
+  .session-body { flex: 1; }
+
+  .session-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--mc-white);
+    margin-bottom: 4px;
+    line-height: 1.4;
+  }
+
+  .session-speakers {
+    font-size: 12px;
+    color: var(--mc-gray-text);
+    margin-bottom: 4px;
+  }
+
+  .session-desc {
+    font-size: 12px;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.5;
+  }
+
+  .session-type {
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  .stype {
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 6px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+  }
+
+  .stype-break { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); }
+  .stype-plenary { background: rgba(0,180,216,0.15); color: var(--mc-cyan); border: 1px solid rgba(0,180,216,0.2); }
+  .stype-workshop { background: rgba(106,79,160,0.2); color: #a78bfa; border: 1px solid rgba(106,79,160,0.25); }
+  .stype-social { background: rgba(184,61,138,0.15); color: #f093c0; border: 1px solid rgba(184,61,138,0.2); }
+  .stype-panel { background: rgba(42,74,138,0.25); color: #7fa8f0; border: 1px solid rgba(42,74,138,0.35); }
+
+  /* ─── PREPARE ─── */
+  .prepare-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+
+  .prepare-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--mc-border);
+    border-radius: 14px;
+    padding: 22px;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .prepare-card:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(0,180,216,0.3);
+  }
+
+  .prepare-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 14px;
+    font-size: 20px;
+  }
+
+  .prepare-card-title {
+    font-family: 'Outfit', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--mc-white);
+  }
+
+  .prepare-items { list-style: none; }
+
+  .prepare-items li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.65);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    line-height: 1.5;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .prepare-items li:last-child { border-bottom: none; }
+
+  .prepare-items li::before {
+    content: '→';
+    color: var(--mc-cyan);
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  .logistics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .logistics-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--mc-border);
+    border-radius: 12px;
+    padding: 18px;
+  }
+
+  .logistics-label {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--mc-cyan);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+
+  .hotel-list { list-style: none; }
+
+  .hotel-list li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hotel-list li::before { content: '🏨'; font-size: 14px; }
+  .hotel-list li:last-child { border-bottom: none; }
+
+  .topics-list { list-style: none; }
+
+  .topics-list li {
+    font-size: 13px;
+    color: rgba(255,255,255,0.7);
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    line-height: 1.5;
+  }
+
+  .topics-list li:last-child { border-bottom: none; }
+
+  .topics-list li::before {
+    content: '◆';
+    color: var(--mc-cyan);
+    font-size: 8px;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .section-subtitle {
+    font-family: 'Outfit', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    margin-top: 36px;
+    margin-bottom: 14px;
+    color: var(--mc-white);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-subtitle::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--mc-border);
+  }
+
+  /* ─── SCROLLBAR ─── */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 3px; }
+
+  .swp-grid { display: grid; }
+  @media (max-width: 700px) {
+    .swp-grid { grid-template-columns: 1fr !important; }
+    .swp-footer { flex-direction: column; align-items: flex-start !important; padding: 16px 20px !important; }
+    .swp-col { border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.1); padding: 16px 20px !important; }
+    .swp-col:last-child { border-bottom: none; }
+    .hero { padding: 32px 20px 36px; }
+    .hero h1 { font-size: 28px; }
+    .hero-sub { font-size: 13px; }
+    .hero-pills { flex-direction: column; gap: 8px; }
+    .hero-pill { padding: 10px 14px; }
+    .content { padding: 20px 16px; }
+    .nav-inner { padding: 0 4px; }
+    .nav-tab { padding: 13px 10px; font-size: 11px; gap: 4px; }
+    .tab-icon { font-size: 13px; }
+    .hero-mosaic { display: none; }
+    .mc-logo-mark { display: none; }
+    .section-title { font-size: 18px; }
+    .section-desc { font-size: 13px; }
+    .participants-grid { grid-template-columns: 1fr; }
+    .day-filter { flex-direction: column; gap: 6px; }
+    .day-btn { text-align: left; padding: 12px 16px; }
+    .session-item { flex-wrap: wrap; gap: 8px; padding: 12px; }
+    .session-time { min-width: 52px; font-size: 12px; }
+    .session-divider { display: none; }
+    .session-name { font-size: 13px; }
+    .session-speakers { font-size: 11px; }
+    .session-desc { font-size: 11px; }
+    .session-type { order: -1; }
+    .day-header { flex-direction: column; gap: 6px; padding: 16px 18px; }
+    .day-title { font-size: 15px; }
+    .day-theme { font-size: 12px; }
+    .prepare-grid { grid-template-columns: 1fr; }
+    .logistics-grid { grid-template-columns: 1fr; }
+    .hero-eyebrow { font-size: 10px; padding: 5px 12px; }
+    .region-label { font-size: 10px; }
+    .region-group { margin-bottom: 24px; }
+    .participant-card { padding: 12px; gap: 10px; }
+    .p-name { font-size: 13px; }
+    .p-role { font-size: 11px; }
+    .avatar { width: 38px; height: 38px; font-size: 12px; border-radius: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-mosaic" aria-hidden="true" id="mosaicGrid"></div>
+
+  <div class="hero-content">
+    <div class="hero-eyebrow">PMI · MC Acquisition Workshop</div>
+    <h1>Multi-Category<br><span>Acquisition Workshop</span></h1>
+    <p class="hero-sub">Accelerate MC SFP acquisition at scale, across categories and across regions, with a standardised, actionable framework.</p>
+
+    <div class="hero-pills">
+      <div class="hero-pill">
+        <div class="pill-icon">📅</div>
+        <div>
+          <div class="pill-label">Dates</div>
+          <div class="pill-value">June 2–3–4, 2026</div>
+        </div>
+      </div>
+      <div class="hero-pill">
+        <div class="pill-icon">📍</div>
+        <div>
+          <div class="pill-label">Location</div>
+          <div class="pill-value">Lausanne — Rhodanie Campus</div>
+        </div>
+      </div>
+      <div class="hero-pill">
+        <div class="pill-icon">🌍</div>
+        <div>
+          <div class="pill-label">Markets</div>
+          <div class="pill-value">8 Countries · 3 Regions</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mc-logo-mark">
+    <div class="mc-dots" id="mcDots"></div>
+    <div class="mc-wordmark">MC</div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-inner">
+    <button class="nav-tab active" onclick="switchTab('participants', this)">
+      <span class="tab-icon">👥</span> Participants
+    </button>
+    <button class="nav-tab" onclick="switchTab('agenda', this)">
+      <span class="tab-icon">📋</span> Agenda
+    </button>
+    <button class="nav-tab" onclick="switchTab('logistics', this)">
+      <span class="tab-icon">✈️</span> Logistics
+    </button>
+    <button class="nav-tab" onclick="switchTab('prepare', this)">
+      <span class="tab-icon">✅</span> How to prepare
+    </button>
+  </div>
+</nav>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- PARTICIPANTS TAB -->
+  <div class="section active" id="participants">
+    <div class="section-title">Who's in the room</div>
+    <p class="section-desc">8 markets across Regions 2, 3 and 4 — bringing together CX leads, brand engagement and regional experts.</p>
+
+    <!-- Region 2 -->
+    <div class="region-group">
+      <div class="region-label">Region 2 — MENA</div>
+      <div class="participants-grid">
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,180,216,0.18); color: #00c4e0;">YY</div>
+          <div>
+            <div class="p-name">Yasser Yunis</div>
+            <div class="p-role">Manager SFP CX Programs MENA</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🌐</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,180,216,0.12); color: #00c4e0;">MZ</div>
+          <div>
+            <div class="p-name">Mircea Zetel</div>
+            <div class="p-role">Director MC & Digital</div>
+          </div>
+          <div class="p-market-flag">🌐</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(210,60,0,0.2); color: #ff7a4a;">RN</div>
+          <div>
+            <div class="p-name">Raymond Nassar</div>
+            <div class="p-role">Manager Consumer Experience E&L</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇪🇬</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(210,60,0,0.2); color: #ff7a4a;">HG</div>
+          <div>
+            <div class="p-name">Hady Gamaleldin</div>
+            <div class="p-role">Manager Lead Generation & Management</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇪🇬</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(210,60,0,0.2); color: #ff7a4a;">ME</div>
+          <div>
+            <div class="p-name">Mohammed Emara</div>
+            <div class="p-role">HNB Brand Manager</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇪🇬</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,120,60,0.22); color: #4db87a;">IB</div>
+          <div>
+            <div class="p-name">Imane Bennouna</div>
+            <div class="p-role">Brand Engagement</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇲🇦</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,120,60,0.22); color: #4db87a;">MA</div>
+          <div>
+            <div class="p-name">Mohssine Akram</div>
+            <div class="p-role">CEJ Manager P1 & P5</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇲🇦</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Region 3 -->
+    <div class="region-group">
+      <div class="region-label">Region 3 — Europe</div>
+      <div class="participants-grid">
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(42,74,138,0.3); color: #7fa8f0;">PK</div>
+          <div>
+            <div class="p-name">Pawel Kosakowski</div>
+            <div class="p-role">Manager M-C Strategy Europe</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🌍</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(42,74,138,0.3); color: #7fa8f0;">GC</div>
+          <div>
+            <div class="p-name">George Chatzidakis</div>
+            <div class="p-role">Sr. Manager Brand Engagement EU</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🌍</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(42,74,138,0.25); color: #7fa8f0;">UT</div>
+          <div>
+            <div class="p-name">Utku Tari</div>
+            <div class="p-role">Director MC & Digital</div>
+          </div>
+          <div class="p-market-flag">🌍</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(180,30,50,0.2); color: #f07090;">AD</div>
+          <div>
+            <div class="p-name">Andrzej Domeracki</div>
+            <div class="p-role">Senior Manager Consumer Experience</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇪🇸</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(180,30,50,0.2); color: #f07090;">MC</div>
+          <div>
+            <div class="p-name">Marianna Cherubini</div>
+            <div class="p-role">Director Brand Retail & Consumer Engagement</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇪🇸</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(220,30,20,0.2); color: #ff8070;">SM</div>
+          <div>
+            <div class="p-name">Stephanie Madacs</div>
+            <div class="p-role">Manager M-C Consumer Programs</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇦🇹</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(220,30,20,0.2); color: #ff8070;">MS</div>
+          <div>
+            <div class="p-name">Marco Stefanetti</div>
+            <div class="p-role">Sr. Manager M-C Consumer Experience</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇦🇹</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,100,180,0.25); color: #70c0ff;">AP</div>
+          <div>
+            <div class="p-name">Anca Predoiu</div>
+            <div class="p-role">Manager Omnichannel Experience</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇷🇴</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,100,180,0.25); color: #70c0ff;">NC</div>
+          <div>
+            <div class="p-name">Nikola Cvetkovic</div>
+            <div class="p-role">Head of Brand Engagement</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇷🇴</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,140,200,0.2); color: #50c0ee;">MK</div>
+          <div>
+            <div class="p-name">Michalis Kafatsakis</div>
+            <div class="p-role">Head of Consumer Experience</div>
+            <div class="status-badge represented">Represented by team</div>
+          </div>
+          <div class="p-market-flag">🇬🇷</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,140,200,0.2); color: #50c0ee;">TD</div>
+          <div>
+            <div class="p-name">Titika Dimakopoulou</div>
+            <div class="p-role">Manager Acquisition / Brand Engagement</div>
+          </div>
+          <div class="p-market-flag">🇬🇷</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Region 4 -->
+    <div class="region-group">
+      <div class="region-label">Region 4 — Americas</div>
+      <div class="participants-grid">
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(160,80,20,0.25); color: #e0a060;">JG</div>
+          <div>
+            <div class="p-name">Jordan Guzman</div>
+            <div class="p-role">Manager Omnichannel CX — LAC</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🌎</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(180,0,30,0.2); color: #f06060;">AJ</div>
+          <div>
+            <div class="p-name">Ansab Junaid</div>
+            <div class="p-role">Senior Manager Consumer Experience</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇨🇦</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(180,0,30,0.2); color: #f06060;">RS</div>
+          <div>
+            <div class="p-name">Rish Sahni</div>
+            <div class="p-role">Manager, Campaign Orchestration & Program</div>
+            <div class="status-badge represented">T&Es — may not attend</div>
+          </div>
+          <div class="p-market-flag">🇨🇦</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,140,60,0.22); color: #50c880;">OB</div>
+          <div>
+            <div class="p-name">Oscar Benavides</div>
+            <div class="p-role">Director Consumer Experience</div>
+            <div class="status-badge represented">Represented by team</div>
+          </div>
+          <div class="p-market-flag">🇲🇽</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,140,60,0.22); color: #50c880;">FO</div>
+          <div>
+            <div class="p-name">Fernanda Ocampo</div>
+            <div class="p-role">Portfolio Senior Executive</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇲🇽</div>
+        </div>
+        <div class="participant-card">
+          <div class="avatar" style="background: rgba(0,140,60,0.22); color: #50c880;">KV</div>
+          <div>
+            <div class="p-name">Karen Vazquez</div>
+            <div class="p-role">Consumer Engagement Marketing Manager</div>
+            <div class="status-badge confirmed">Confirmed</div>
+          </div>
+          <div class="p-market-flag">🇲🇽</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENDA TAB -->
+  <div class="section" id="agenda">
+    <div class="section-title">3-Day Programme</div>
+    <p class="section-desc">Filter by day to see the full programme. Sessions cover the complete MC acquisition journey — from upper funnel to committed activation plans.</p>
+
+    <div class="day-filter">
+      <button class="day-btn active" onclick="switchDay('day1', this)">
+        Day 1 — Tuesday
+        <span class="btn-date">2 June 2026</span>
+      </button>
+      <button class="day-btn" onclick="switchDay('day2', this)">
+        Day 2 — Wednesday
+        <span class="btn-date">3 June 2026</span>
+      </button>
+      <button class="day-btn" onclick="switchDay('day3', this)">
+        Day 3 — Thursday
+        <span class="btn-date">4 June 2026</span>
+      </button>
+    </div>
+
+    <!-- DAY 1 -->
+    <div class="day-content active" id="day1">
+      <div class="day-header">
+        <div>
+          <div class="day-title">Day 1 — Upper Funnel: Building Awareness</div>
+          <div class="day-theme">Set the stage · Consumer insights · Best practices (Markets 1–4)</div>
+        </div>
+        <div style="font-size:11px;color:var(--mc-gray-text);text-align:right;">09:00 → 19:00+</div>
+      </div>
+      <div class="session-list">
+        <div class="session-item">
+          <div class="session-time">09:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Welcome Breakfast</div>
+            <div class="session-speakers">Organisers · Gianluca opens</div>
+            <div class="session-desc">Set the tone for the 3 days. Welcome by Gianluca Iannelli.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-break">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">09:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Introduction & Interview Outcomes</div>
+            <div class="session-speakers">Special Guest · Gianluca · Carine & Gigi</div>
+            <div class="session-desc">Share back key themes from market diagnostic interviews. Frame the workshop objectives.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">Plenary</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Food for Thoughts — Consumer & Acquisition Data</div>
+            <div class="session-speakers">Olga Ivanova & Noemie Gautier</div>
+            <div class="session-desc">Key data points and consumer insights. Audience model relevant for acquisition.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Interactive Session — "Do You Know?"</div>
+            <div class="session-speakers">All participants</div>
+            <div class="session-desc">Quiz on data. Team game via Menti or Kahoot! to test and energise the room.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">Workshop</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:50</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Morning Break</div></div>
+          <div class="session-type"><span class="stype stype-break">15 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">11:05</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">MC Acquisition Deep Dive — MC Enabled LAMPs & Events</div>
+            <div class="session-speakers">Gigi (Gihad Ashmawy)</div>
+            <div class="session-desc">Role of MC brand strategy. Latest MC LAMPs strategy & engagement guidelines. Includes Egypt market example on MC Events.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">45 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">11:50</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">CC to SFP Bridging</div>
+            <div class="session-speakers">Omegani Weku</div>
+            <div class="session-desc">New toolboxes and off-pack releases. Immediately usable guidance on CC to SFP (not MC).</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">12:20</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Paid Media in MC & Latest Updates</div>
+            <div class="session-speakers">Bertrand</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">20 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">12:40</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">React & Reflect</div>
+            <div class="session-speakers">All markets</div>
+            <div class="session-desc">Each market gets 3 post-its: one thing they do well / one opportunity / one thing they don't know how to tackle yet. Wall exercise seeds the Day 2 activation roadmap.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">20 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">13:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Lunch Break</div></div>
+          <div class="session-type"><span class="stype stype-break">60 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">14:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Best Practice Wall — Part 1 (Markets 1, 2, 3 & 4)</div>
+            <div class="session-speakers">Markets 1–4</div>
+            <div class="session-desc">4 markets × 20 min each. Format: Context → Tactic → Result → Lessons Learned. Best practices collected on the wall. Closes with dot voting "Steal a Best Practice".</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">120 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">16:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Afternoon Break</div></div>
+          <div class="session-type"><span class="stype stype-break">15 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">16:15</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Heads Together — Breakout Sessions</div>
+            <div class="session-speakers">All markets + SMEs</div>
+            <div class="session-desc">Markets rotate across 3–4 breakouts (defined from pre-workshop interviews). Discuss challenges, build on ideas, capture 2–3 solutions per breakout. Includes KPI framework thinking.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">75 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">17:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Closure Day 1 + Day 2 Briefing</div>
+            <div class="session-speakers">Carine & Gigi</div>
+            <div class="session-desc">Wrap-up & preview Day 2. Roadmap template briefing for markets.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">19:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Dinner at Brasserie Montbenon</div>
+            <div class="session-speakers">All participants</div>
+          </div>
+          <div class="session-type"><span class="stype stype-social">Social</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 2 -->
+    <div class="day-content" id="day2">
+      <div class="day-header">
+        <div>
+          <div class="day-title">Day 2 — Engagement to Guided Trial</div>
+          <div class="day-theme">Categories panel · Best practices (Markets 5–8) · Activation roadmap</div>
+        </div>
+        <div style="font-size:11px;color:var(--mc-gray-text);text-align:right;">09:00 → Apéro</div>
+      </div>
+      <div class="session-list">
+        <div class="session-item">
+          <div class="session-time">09:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Welcome Breakfast + Day 1 Reflection</div>
+            <div class="session-speakers">Gigi & Carine</div>
+            <div class="session-desc">One word from yesterday. Facilitator surfaces key themes from Day 1.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-break">15 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">09:15</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Categories Panel — Ask the Experts!</div>
+            <div class="session-speakers">Deniz Bejtula · Luca Zanni · Nicolas Benavail</div>
+            <div class="session-desc">Open Q&A with category leads on portfolio strategy, SFP navigation and acquisition enablers across categories.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-panel">Panel</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">SFP News Flash — Newspaper Headline Exercise</div>
+            <div class="session-speakers">All markets</div>
+            <div class="session-desc">Each market writes an imaginary 2027 headline: "[Market X] transforms acquisition thanks to [new initiative]." Read aloud in plenary. Visionary, fun, sets an aspirational tone.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Morning Break</div></div>
+          <div class="session-type"><span class="stype stype-break">15 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:45</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Leads Generation & Management</div>
+            <div class="session-speakers">Carine (Karia) & Mariola Sasinowska</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">45 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">11:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">MC Navigation & Remuneration Scheme</div>
+            <div class="session-speakers">Marta Kobylecka & Hassan (or team)</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">45 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">12:15</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Lunch Break</div></div>
+          <div class="session-type"><span class="stype stype-break">60 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">13:15</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Best Practice Wall — Part 2 (Markets 5, 6, 7 & 8)</div>
+            <div class="session-speakers">Markets 5–8</div>
+            <div class="session-desc">4 markets × 20 min each. Same format as Day 1. Best practices added to the wall.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">45 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">14:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Dot-Voting — Steal a Best Practice</div>
+            <div class="session-speakers">All participants</div>
+            <div class="session-desc">All best practices on the wall. Each participant gets 3 votes for what they'd steal for their market. Feeds directly into the activation roadmap.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">45 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">14:45</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Activation Roadmap — Market Working Sessions</div>
+            <div class="session-speakers">All markets + SMEs + facilitators</div>
+            <div class="session-desc">Each market works on their own activation roadmap using a shared template. Facilitators rotate to support. Output: draft roadmap per market.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">45 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">15:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Afternoon Break</div></div>
+          <div class="session-type"><span class="stype stype-break">15 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">15:45</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Share-Out — Activation Roadmap Highlights</div>
+            <div class="session-speakers">All markets</div>
+            <div class="session-desc">Each market shares key highlights from their draft activation roadmap and gets feedback from peers and SMEs.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">~60 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">~17:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Wrap-Up Day 2</div>
+            <div class="session-speakers">Carine & Gigi</div>
+            <div class="session-desc">Wrap-up & preview Day 3.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">~19:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Apéro — 6th Floor</div>
+            <div class="session-speakers">All participants</div>
+          </div>
+          <div class="session-type"><span class="stype stype-social">Social</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DAY 3 -->
+    <div class="day-content" id="day3">
+      <div class="day-header">
+        <div>
+          <div class="day-title">Day 3 — Inspire & Commit</div>
+          <div class="day-theme">AI in Acquisition · Final activation plan sign-off · Closure</div>
+        </div>
+        <div style="font-size:11px;color:var(--mc-gray-text);text-align:right;">09:00 → 12:30 + Free afternoon</div>
+      </div>
+      <div class="session-list">
+        <div class="session-item">
+          <div class="session-time">09:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Welcome Breakfast</div>
+            <div class="session-speakers">Organisers</div>
+          </div>
+          <div class="session-type"><span class="stype stype-break">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">09:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Agentic AI in Acquisition — Inspirational Session</div>
+            <div class="session-speakers">Accenture Speaker + Modestos</div>
+            <div class="session-desc">AI capabilities applied to acquisition at scale. Includes a hands-on element (TBD). A lighter, inspirational layer to energise the final day.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">60 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body"><div class="session-name">Morning Break</div></div>
+          <div class="session-type"><span class="stype stype-break">15 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">10:45</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Activation Plan Sign-Off</div>
+            <div class="session-speakers">All markets</div>
+            <div class="session-desc">Each market adjusts and finalises their roadmap based on all feedback. Present final version with owners and timeline. Aligned with both previous days' outputs.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-workshop">75 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">12:00</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Closure & Next Steps</div>
+            <div class="session-speakers">Gianluca Iannelli</div>
+            <div class="session-desc">Thank you. Follow-up cadence. What happens after the workshop — ongoing market engagement cadence confirmed.</div>
+          </div>
+          <div class="session-type"><span class="stype stype-plenary">30 min</span></div>
+        </div>
+        <div class="session-item">
+          <div class="session-time">12:30</div>
+          <div class="session-divider"></div>
+          <div class="session-body">
+            <div class="session-name">Lunch & Free Afternoon</div>
+            <div class="session-speakers">All</div>
+            <div class="session-desc">Enjoy Lausanne — the city is yours 🇨🇭</div>
+          </div>
+          <div class="session-type"><span class="stype stype-social">Free time</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOGISTICS TAB -->
+  <div class="section" id="logistics">
+    <div class="section-title">Logistics & practicalities</div>
+    <p class="section-desc">Everything you need to plan your trip to Lausanne — venue, hotels, visa, and contacts.</p>
+
+    <!-- Key info cards -->
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 32px;">
+
+      <div style="background: linear-gradient(135deg, rgba(0,180,216,0.12), rgba(42,74,138,0.12)); border: 1px solid rgba(0,180,216,0.25); border-radius: 14px; padding: 22px;">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc-cyan);font-weight:600;margin-bottom:12px;">📍 Venue</div>
+        <div style="font-size:16px;font-weight:600;color:var(--mc-white);margin-bottom:4px;">Rhodanie Campus</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Lausanne, Switzerland<br>Philip Morris International</div>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 14px; padding: 22px;">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc-cyan);font-weight:600;margin-bottom:12px;">📅 Dates</div>
+        <div style="font-size:16px;font-weight:600;color:var(--mc-white);margin-bottom:4px;">June 2 – 3 – 4, 2026</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Tuesday · Wednesday · Thursday<br>09:00 start each day</div>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 14px; padding: 22px;">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc-cyan);font-weight:600;margin-bottom:12px;">🛂 Visa</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.75);line-height:1.7;">If you require a Swiss visa, submit your request <strong>as early as possible</strong> via the <strong>MyPMI platform</strong>.<br><span style="color:var(--mc-gray-text);">Search: "Visa Invitation Letter" on the MyPMI help centre.</span></div>
+      </div>
+
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 14px; padding: 22px;">
+        <div style="font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mc-cyan);font-weight:600;margin-bottom:12px;">✉️ Key contacts</div>
+        <div style="margin-bottom:10px;">
+          <div style="font-size:13px;font-weight:600;color:var(--mc-white);">Carine Friou</div>
+          <div style="font-size:12px;color:var(--mc-gray-text);">MC CX & CRM Activation</div>
+          <div style="font-size:12px;color:var(--mc-cyan);margin-top:2px;">Carine.Friou@pmi.com</div>
+        </div>
+        <div>
+          <div style="font-size:13px;font-weight:600;color:var(--mc-white);">Gihad Ashmawy</div>
+          <div style="font-size:12px;color:var(--mc-gray-text);">MC Brand Engagement & Events</div>
+          <div style="font-size:12px;color:var(--mc-cyan);margin-top:2px;">Gihad.Ashmawy@pmi.com</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Hotels -->
+    <div class="section-subtitle">Recommended hotels near the campus</div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px; margin-bottom: 32px;">
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 12px; padding: 16px 18px; display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">🏨</span>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--mc-white);">Moxy Lausanne City</div>
+          <div style="font-size:11px;color:var(--mc-gray-text);">or Moxy Lausanne Flon</div>
+        </div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 12px; padding: 16px 18px; display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">🏨</span>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--mc-white);">Hotel de la Paix</div>
+        </div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 12px; padding: 16px 18px; display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">🏨</span>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--mc-white);">Mövenpick Hotel</div>
+          <div style="font-size:11px;color:var(--mc-gray-text);">Lausanne</div>
+        </div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 12px; padding: 16px 18px; display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">🏨</span>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--mc-white);">Château d'Ouchy</div>
+        </div>
+      </div>
+      <div style="background: rgba(255,255,255,0.04); border: 1px solid var(--mc-border); border-radius: 12px; padding: 16px 18px; display:flex; align-items:center; gap:12px;">
+        <span style="font-size:20px;">🏨</span>
+        <div>
+          <div style="font-size:13px;font-weight:500;color:var(--mc-white);">Hôtel Angleterre</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Evening programme note -->
+    <div style="background: rgba(184,61,138,0.1); border: 1px solid rgba(184,61,138,0.25); border-radius: 14px; padding: 20px 24px; display:flex; align-items:flex-start; gap:16px;">
+      <span style="font-size:22px; flex-shrink:0; margin-top:2px;">🍽️</span>
+      <div>
+        <div style="font-size:14px;font-weight:600;color:var(--mc-white);margin-bottom:6px;">Dinner — Tuesday 2 June · Brasserie Montbenon</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Group dinner on the first evening — details and booking confirmation to follow. Apéro on Day 2 evening at the 6th floor (location TBC).</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PREPARE TAB -->
+  <div class="section" id="prepare">
+    <div class="section-title">How to prepare</div>
+    <p class="section-desc">One thing. That's it. Come ready with your <strong>"Steal With Pride"</strong> slide — one big idea from your market that could move the needle for someone else in the room.</p>
+
+    <!-- The main brief card — styled like the slide -->
+    <div style="background: var(--mc-dark); border: 1px solid rgba(0,180,216,0.3); border-radius: 18px; overflow: hidden; margin-bottom: 28px;">
+
+      <!-- Header band -->
+      <div style="background: linear-gradient(135deg, rgba(0,180,216,0.18) 0%, rgba(42,74,138,0.2) 100%); padding: 28px 32px; border-bottom: 1px solid rgba(0,180,216,0.2);">
+        <div style="font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mc-cyan);font-weight:600;margin-bottom:10px;">Your one task before the workshop</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:26px;font-weight:700;color:var(--mc-white);line-height:1.2;margin-bottom:6px;">"Steal With Pride" Session</div>
+        <div style="font-size:15px;color:rgba(255,255,255,0.6);font-style:italic;">One slide. One big idea. 20 minutes.</div>
+      </div>
+
+      <!-- Central question -->
+      <div style="padding: 24px 32px; border-bottom: 1px solid var(--mc-border);">
+        <div style="background: rgba(0,180,216,0.18); border: 1px solid rgba(0,180,216,0.35); border-radius: 12px; padding: 16px 22px; text-align: center;">
+          <span style="font-size:14px;color:var(--mc-white);line-height:1.5;">If there is <strong style="color:var(--mc-white);">one thing you've done in acquisition that genuinely worked</strong>, what is it?</span>
+        </div>
+      </div>
+
+      <!-- Three columns -->
+      <div class="swp-grid" style="display: grid; grid-template-columns: repeat(3,1fr); gap: 0; padding: 0;">
+
+        <div class="swp-col" style="padding: 20px 22px; border-right: 1px solid var(--mc-border);">
+          <div style="font-size: 28px; margin-bottom: 12px;">💡</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:var(--mc-white);line-height:1.1;margin-bottom:10px;">THE<br>IDEA</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">What did you do?<br>Present the cool thing that worked — one tactic, one initiative, one channel moment.</div>
+        </div>
+
+        <div class="swp-col" style="padding: 20px 22px; border-right: 1px solid var(--mc-border);">
+          <div style="font-size: 28px; margin-bottom: 12px;">🚀</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:var(--mc-white);line-height:1.1;margin-bottom:10px;">WHY IT<br>WORKED</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">Key result or impact.<br>Keep it concrete — a number, a rate, a behaviour change you observed.</div>
+        </div>
+
+        <div class="swp-col" style="padding: 20px 22px;">
+          <div style="font-size: 28px; margin-bottom: 12px;">⏱️</div>
+          <div style="font-family:'Outfit',sans-serif;font-size:22px;font-weight:700;color:var(--mc-white);line-height:1.1;margin-bottom:10px;">YOUR<br>TIME</div>
+          <div style="font-size:13px;color:rgba(255,255,255,0.55);line-height:1.6;">20 min total.<br><strong style="color:rgba(255,255,255,0.8);">15' present</strong> + <strong style="color:rgba(255,255,255,0.8);">5' Q&A</strong><br>One slide only — no exceptions.</div>
+        </div>
+      </div>
+
+      <!-- Deadline + rules footer -->
+      <div class="swp-footer" style="background: rgba(255,255,255,0.04); border-top: 1px solid var(--mc-border); padding: 18px 24px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:14px;">
+        <div style="font-size:13px;color:var(--mc-white);font-weight:500;">
+          📬 Send your slide before <strong style="color:var(--mc-cyan);">27 May 2026</strong> to let the team prepare material before the workshop.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:.05em;">1 SLIDE ONLY</span>
+          <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:.05em;">SHORT & PUNCHY</span>
+          <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:.05em;">NO 20-SLIDE DECKS</span>
+          <span style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;color:rgba(255,255,255,0.6);letter-spacing:.05em;">NO MARKET OVERVIEWS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Small tips row -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--mc-border);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:18px;flex-shrink:0;margin-top:1px;">🎯</span>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Focus on the <strong style="color:var(--mc-white);">idea that transfers</strong> — not the market context. Others need to steal it.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--mc-border);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:18px;flex-shrink:0;margin-top:1px;">🖼️</span>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Make it <strong style="color:var(--mc-white);">visual and memorable</strong> — one slide that people photograph during the session.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--mc-border);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:18px;flex-shrink:0;margin-top:1px;">📤</span>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Send the slide to <strong style="color:var(--mc-white);">Carine</strong> before 27 May so the team can align.</div>
+      </div>
+      <div style="background:rgba(255,255,255,0.04);border:1px solid var(--mc-border);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start;">
+        <span style="font-size:18px;flex-shrink:0;margin-top:1px;">🤝</span>
+        <div style="font-size:13px;color:rgba(255,255,255,0.65);line-height:1.6;">Come ready to <strong style="color:var(--mc-white);">ask questions</strong> of the other markets — the Q&A is where the real value happens.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function switchTab(id, btn) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function switchDay(id, btn) {
+  document.querySelectorAll('.day-content').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.day-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+}
+
+(function buildMosaic() {
+  const colors = [
+    '#00b4d8','#17c3e0','#0e8fa0','#2a4a8a','#1a3060',
+    '#6a4fa0','#b83d8a','#3a5ca8','#00c4e0','#536ab8',
+    '#8a3f8a','#1a7a9a','#2d5aa8','#0099bb','#7040a0'
+  ];
+  const grid = document.getElementById('mosaicGrid');
+  for (let i = 0; i < 30; i++) {
+    const t = document.createElement('div');
+    t.className = 'mosaic-tile';
+    const r = (Math.random() * 20 - 10).toFixed(1);
+    t.style.cssText = `background:${colors[i % colors.length]};--r:${r}deg;opacity:${(0.3 + Math.random()*0.5).toFixed(2)};`;
+    grid.appendChild(t);
+  }
+})();
+
+(function buildMCLogo() {
+  const dotColors = [
+    '#b83d8a','#6a4fa0','#00b4d8',
+    '#2a4a8a','#00b4d8','#17c3e0',
+    '#0e8fa0','#17c3e0','#00b4d8'
+  ];
+  const container = document.getElementById('mcDots');
+  dotColors.forEach(c => {
+    const d = document.createElement('div');
+    d.className = 'mc-dot';
+    d.style.background = c;
+    container.appendChild(d);
+  });
+})();
+</script>
+</body>
+</html>
