@@ -64,10 +64,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 .p-name{font-size:14px;font-weight:600;color:var(--mc-navy);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .p-role{font-size:12px;color:var(--mc-gray);line-height:1.35;margin-top:1px}
 .p-flag{font-size:16px;flex-shrink:0}
-.p-status{font-size:10px;font-weight:600;letter-spacing:.06em;margin-top:4px}
-.status-confirmed{color:var(--mc-teal)}
-.status-represented{color:var(--mc-accent)}
-.status-tbc{color:var(--mc-gray)}
 
 /* AGENDA */
 .day-tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
@@ -179,14 +175,50 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 .section-title{font-family:'Instrument Serif',serif;font-size:26px;color:var(--mc-navy);margin-bottom:6px}
 .section-sub{font-size:14px;color:var(--mc-gray);margin-bottom:24px}
 
-@media(max-width:640px){
-  .nav-tabs{gap:2px}
-  .nav-tab{padding:6px 10px;font-size:12px}
-  .session-item{grid-template-columns:52px 1fr;gap:8px}
+/* BOTTOM NAV (mobile) */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--mc-white);border-top:1px solid var(--mc-border);z-index:200;padding:0 4px env(safe-area-inset-bottom)}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:stretch}
+.bnav-btn{flex:1;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;padding:8px 2px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--mc-gray);transition:color .15s;min-width:0}
+.bnav-btn .bnav-icon{font-size:20px;line-height:1}
+.bnav-btn .bnav-label{font-size:10px;font-weight:500;letter-spacing:.02em;white-space:nowrap}
+.bnav-btn.active{color:var(--mc-teal)}
+.bnav-btn.active .bnav-label{font-weight:700}
+
+/* MOBILE OVERRIDES */
+@media(max-width:700px){
+  body{padding-bottom:68px}
+  .nav .nav-tabs{display:none}
+  .nav-inner{justify-content:flex-start;gap:10px}
+  .bottom-nav{display:block}
+  .session-item{grid-template-columns:50px 1fr;gap:8px}
   .s-dur{display:none}
   .market-cards{grid-template-columns:1fr}
-  .hero-title{font-size:32px}
-  .day-header{flex-direction:column;align-items:flex-start}
+  .hero{padding:40px 16px 36px}
+  .hero-title{font-size:30px}
+  .hero-sub{font-size:14px}
+  .hero-pills{gap:7px}
+  .hero-pill{font-size:12px;padding:6px 12px}
+  .day-header{flex-direction:column;align-items:flex-start;gap:6px}
+  .section{padding:24px 16px}
+  .participant-grid{grid-template-columns:1fr 1fr;gap:8px}
+  .p-card{padding:10px 12px;gap:9px}
+  .p-avatar{width:32px;height:32px;font-size:11px}
+  .p-name{font-size:13px}
+  .p-role{font-size:11px}
+  .p-flag{font-size:14px}
+  .logistics-grid{grid-template-columns:1fr}
+  .prep-cards{grid-template-columns:1fr 1fr}
+  .rating-section{padding:16px}
+  .day-tabs{gap:6px}
+  .day-tab{padding:8px 14px;font-size:13px}
+  .section-title{font-size:22px}
+  .diag-intro{padding:16px}
+  .mkt-header{padding:14px 16px 10px}
+  .mkt-body{padding:0 16px 16px}
+}
+@media(max-width:380px){
+  .participant-grid{grid-template-columns:1fr}
+  .prep-cards{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -199,15 +231,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
       <span class="nav-title">Acquisition Workshop</span>
     </div>
     <div class="nav-tabs">
-      <button class="nav-tab active" onclick="showSection('participants')">👥 Participants</button>
-      <button class="nav-tab" onclick="showSection('agenda')">📋 Agenda</button>
-      <button class="nav-tab" onclick="showSection('diagnostic')">🔍 Diagnostic</button>
-      <button class="nav-tab" onclick="showSection('logistics')">✈️ Logistics</button>
-      <button class="nav-tab" onclick="showSection('prep')">✅ Prepare</button>
-      <button class="nav-tab" onclick="showSection('feedback')">💬 Feedback</button>
+      <button class="nav-tab active" onclick="showSection('participants',this)">👥 Participants</button>
+      <button class="nav-tab" onclick="showSection('agenda',this)">📋 Agenda</button>
+      <button class="nav-tab" onclick="showSection('diagnostic',this)">🔍 Diagnostic</button>
+      <button class="nav-tab" onclick="showSection('logistics',this)">✈️ Logistics</button>
+      <button class="nav-tab" onclick="showSection('prep',this)">✅ Prepare</button>
+      <button class="nav-tab" onclick="showSection('feedback',this)">💬 Feedback</button>
     </div>
   </div>
 </nav>
+
+<!-- BOTTOM NAV -->
+<div class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-btn active" onclick="showSection('participants',this)"><span class="bnav-icon">👥</span><span class="bnav-label">People</span></button>
+    <button class="bnav-btn" onclick="showSection('agenda',this)"><span class="bnav-icon">📋</span><span class="bnav-label">Agenda</span></button>
+    <button class="bnav-btn" onclick="showSection('diagnostic',this)"><span class="bnav-icon">🔍</span><span class="bnav-label">Insights</span></button>
+    <button class="bnav-btn" onclick="showSection('logistics',this)"><span class="bnav-icon">✈️</span><span class="bnav-label">Logistics</span></button>
+    <button class="bnav-btn" onclick="showSection('prep',this)"><span class="bnav-icon">✅</span><span class="bnav-label">Prepare</span></button>
+    <button class="bnav-btn" onclick="showSection('feedback',this)"><span class="bnav-icon">💬</span><span class="bnav-label">Feedback</span></button>
+  </div>
+</div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -229,56 +273,56 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 
   <div class="region-title">Region 2 — MENA</div>
   <div class="participant-grid">
-    <div class="p-card"><div class="p-avatar">YY</div><div class="p-info"><div class="p-name">Yasser Yunis</div><div class="p-role">Manager SFP CX Programs MENA</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">RN</div><div class="p-info"><div class="p-name">Raymond Nassar</div><div class="p-role">Manager Consumer Experience E&L</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇪🇬</div></div>
-    <div class="p-card"><div class="p-avatar">HG</div><div class="p-info"><div class="p-name">Hady Gamaleldin</div><div class="p-role">Manager Lead Generation & Management</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇪🇬</div></div>
-    <div class="p-card"><div class="p-avatar">IB</div><div class="p-info"><div class="p-name">Imane Bennouna</div><div class="p-role">Brand Engagement P5</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇲🇦</div></div>
-    <div class="p-card"><div class="p-avatar">MA</div><div class="p-info"><div class="p-name">Mohssine Akram</div><div class="p-role">CEJ Manager P1 & P5</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇲🇦</div></div>
+    <div class="p-card"><div class="p-avatar">YY</div><div class="p-info"><div class="p-name">Yasser Yunis</div><div class="p-role">Manager SFP CX Programs MENA</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">RN</div><div class="p-info"><div class="p-name">Raymond Nassar</div><div class="p-role">Manager Consumer Experience E&L</div></div><div class="p-flag">🇪🇬</div></div>
+    <div class="p-card"><div class="p-avatar">HG</div><div class="p-info"><div class="p-name">Hady Gamaleldin</div><div class="p-role">Manager Lead Generation & Management</div></div><div class="p-flag">🇪🇬</div></div>
+    <div class="p-card"><div class="p-avatar">IB</div><div class="p-info"><div class="p-name">Imane Bennouna</div><div class="p-role">Brand Engagement P5</div></div><div class="p-flag">🇲🇦</div></div>
+    <div class="p-card"><div class="p-avatar">MA</div><div class="p-info"><div class="p-name">Mohssine Akram</div><div class="p-role">CEJ Manager P1 & P5</div></div><div class="p-flag">🇲🇦</div></div>
   </div>
 
   <div class="region-title">Region 3 — Europe</div>
   <div class="participant-grid">
-    <div class="p-card"><div class="p-avatar">PK</div><div class="p-info"><div class="p-name">Pawel Kosakowski</div><div class="p-role">Manager M-C Strategy Europe</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌍</div></div>
-    <div class="p-card"><div class="p-avatar">SM</div><div class="p-info"><div class="p-name">Stephanie Madacs</div><div class="p-role">Manager M-C Consumer Programs</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇦🇹</div></div>
-    <div class="p-card"><div class="p-avatar">MS</div><div class="p-info"><div class="p-name">Marco Stefanetti</div><div class="p-role">Sr. Manager M-C Consumer Experience</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇦🇹</div></div>
-    <div class="p-card"><div class="p-avatar">AP</div><div class="p-info"><div class="p-name">Anca Predoiu</div><div class="p-role">Manager Omnichannel Experience</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇷🇴</div></div>
-    <div class="p-card"><div class="p-avatar">NC</div><div class="p-info"><div class="p-name">Nikola Cvetkovic</div><div class="p-role">Head of Brand Engagement</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇷🇴</div></div>
-    <div class="p-card"><div class="p-avatar">MK</div><div class="p-info"><div class="p-name">Michalis Kafatsakis</div><div class="p-role">Head of Consumer Experience</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇬🇷</div></div>
-    <div class="p-card"><div class="p-avatar">TD</div><div class="p-info"><div class="p-name">Titika Dimakopoulou</div><div class="p-role">Manager Acquisition / Brand Engagement</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇬🇷</div></div>
+    <div class="p-card"><div class="p-avatar">PK</div><div class="p-info"><div class="p-name">Pawel Kosakowski</div><div class="p-role">Manager M-C Strategy Europe</div></div><div class="p-flag">🌍</div></div>
+    <div class="p-card"><div class="p-avatar">SM</div><div class="p-info"><div class="p-name">Stephanie Madacs</div><div class="p-role">Manager M-C Consumer Programs</div></div><div class="p-flag">🇦🇹</div></div>
+    <div class="p-card"><div class="p-avatar">MS</div><div class="p-info"><div class="p-name">Marco Stefanetti</div><div class="p-role">Sr. Manager M-C Consumer Experience</div></div><div class="p-flag">🇦🇹</div></div>
+    <div class="p-card"><div class="p-avatar">AP</div><div class="p-info"><div class="p-name">Anca Predoiu</div><div class="p-role">Manager Omnichannel Experience</div></div><div class="p-flag">🇷🇴</div></div>
+    <div class="p-card"><div class="p-avatar">NC</div><div class="p-info"><div class="p-name">Nikola Cvetkovic</div><div class="p-role">Head of Brand Engagement</div></div><div class="p-flag">🇷🇴</div></div>
+    <div class="p-card"><div class="p-avatar">MK</div><div class="p-info"><div class="p-name">Michalis Kafatsakis</div><div class="p-role">Head of Consumer Experience</div></div><div class="p-flag">🇬🇷</div></div>
+    <div class="p-card"><div class="p-avatar">TD</div><div class="p-info"><div class="p-name">Titika Dimakopoulou</div><div class="p-role">Manager Acquisition / Brand Engagement</div></div><div class="p-flag">🇬🇷</div></div>
   </div>
 
   <div class="region-title">Region 4 — Americas</div>
   <div class="participant-grid">
-    <div class="p-card"><div class="p-avatar">AJ</div><div class="p-info"><div class="p-name">Ansab Junaid</div><div class="p-role">Senior Manager Consumer Experience</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇨🇦</div></div>
-    <div class="p-card"><div class="p-avatar">FO</div><div class="p-info"><div class="p-name">Fernanda Ocampo</div><div class="p-role">Sr. Manager CX Awareness & Acquisition</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇲🇽</div></div>
-    <div class="p-card"><div class="p-avatar">KV</div><div class="p-info"><div class="p-name">Karen Vazquez</div><div class="p-role">Consumer Engagement Marketing Manager</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🇲🇽</div></div>
+    <div class="p-card"><div class="p-avatar">AJ</div><div class="p-info"><div class="p-name">Ansab Junaid</div><div class="p-role">Senior Manager Consumer Experience</div></div><div class="p-flag">🇨🇦</div></div>
+    <div class="p-card"><div class="p-avatar">FO</div><div class="p-info"><div class="p-name">Fernanda Ocampo</div><div class="p-role">Sr. Manager CX Awareness & Acquisition</div></div><div class="p-flag">🇲🇽</div></div>
+    <div class="p-card"><div class="p-avatar">KV</div><div class="p-info"><div class="p-name">Karen Vazquez</div><div class="p-role">Consumer Engagement Marketing Manager</div></div><div class="p-flag">🇲🇽</div></div>
   </div>
 
   <div class="region-title">Operating Centre (OC)</div>
   <div class="participant-grid">
-    <div class="p-card"><div class="p-avatar">GI</div><div class="p-info"><div class="p-name">Gianluca Iannelli</div><div class="p-role">Global Head Multi-Category Marketing</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">GA</div><div class="p-info"><div class="p-name">Gihad Ashmawy</div><div class="p-role">Head Multi-Category Brand and LAMPS</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">CF</div><div class="p-info"><div class="p-name">Carine Friou</div><div class="p-role">Head M-C CX & CRM Activation</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">MK</div><div class="p-info"><div class="p-name">Marta Kobylecka</div><div class="p-role">Head M-C CX Acquisition</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">MS</div><div class="p-info"><div class="p-name">Mariola Sasinowska</div><div class="p-role">Manager M-C CX Acquisition</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">AV</div><div class="p-info"><div class="p-name">Alexandrine Vulliermet</div><div class="p-role">Manager MC Brand</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">OI</div><div class="p-info"><div class="p-name">Olga Ivanova</div><div class="p-role">Manager Audience Strategy & Profiling</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">NG</div><div class="p-info"><div class="p-name">Noemie Gautier</div><div class="p-role">Manager Audience Strategy</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">EK</div><div class="p-info"><div class="p-name">Evgeny Karia</div><div class="p-role">Head CIAM Digital Product Group</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">DB</div><div class="p-info"><div class="p-name">Deniz Bejtula</div><div class="p-role">Head CX HnB Acquisition</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">HV</div><div class="p-info"><div class="p-name">Helene Valat</div><div class="p-role">CX Acquisition HnB</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">NB</div><div class="p-info"><div class="p-name">Nicolas Benavail</div><div class="p-role">Head CX eVapor</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">RS</div><div class="p-info"><div class="p-name">Romina Skenderi</div><div class="p-role">Manager Consumer Experience eVapor</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">ML</div><div class="p-info"><div class="p-name">Marek Lejsek</div><div class="p-role">Sr. Manager CX & Programs</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">BR</div><div class="p-info"><div class="p-name">Bertrand Rouault</div><div class="p-role">Head of Media Global Paid Media</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar">LZ</div><div class="p-info"><div class="p-name">Luca Zanni</div><div class="p-role">Head CX Oral Smokeless</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">GI</div><div class="p-info"><div class="p-name">Gianluca Iannelli</div><div class="p-role">Global Head Multi-Category Marketing</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">GA</div><div class="p-info"><div class="p-name">Gihad Ashmawy</div><div class="p-role">Head Multi-Category Brand and LAMPS</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">CF</div><div class="p-info"><div class="p-name">Carine Friou</div><div class="p-role">Head M-C CX & CRM Activation</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">MK</div><div class="p-info"><div class="p-name">Marta Kobylecka</div><div class="p-role">Head M-C CX Acquisition</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">MS</div><div class="p-info"><div class="p-name">Mariola Sasinowska</div><div class="p-role">Manager M-C CX Acquisition</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">AV</div><div class="p-info"><div class="p-name">Alexandrine Vulliermet</div><div class="p-role">Manager MC Brand</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">OI</div><div class="p-info"><div class="p-name">Olga Ivanova</div><div class="p-role">Manager Audience Strategy & Profiling</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">NG</div><div class="p-info"><div class="p-name">Noemie Gautier</div><div class="p-role">Manager Audience Strategy</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">EK</div><div class="p-info"><div class="p-name">Evgeny Karia</div><div class="p-role">Head CIAM Digital Product Group</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">DB</div><div class="p-info"><div class="p-name">Deniz Bejtula</div><div class="p-role">Head CX HnB Acquisition</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">HV</div><div class="p-info"><div class="p-name">Helene Valat</div><div class="p-role">CX Acquisition HnB</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">NB</div><div class="p-info"><div class="p-name">Nicolas Benavail</div><div class="p-role">Head CX eVapor</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">RS</div><div class="p-info"><div class="p-name">Romina Skenderi</div><div class="p-role">Manager Consumer Experience eVapor</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">ML</div><div class="p-info"><div class="p-name">Marek Lejsek</div><div class="p-role">Sr. Manager CX & Programs</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">BR</div><div class="p-info"><div class="p-name">Bertrand Rouault</div><div class="p-role">Head of Media Global Paid Media</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar">LZ</div><div class="p-info"><div class="p-name">Luca Zanni</div><div class="p-role">Head CX Oral Smokeless</div></div><div class="p-flag">🌐</div></div>
   </div>
 
   <div class="region-title">Accenture — Facilitation Team</div>
   <div class="participant-grid">
-    <div class="p-card"><div class="p-avatar" style="background:#A100FF">WR</div><div class="p-info"><div class="p-name">Wim Roelfs</div><div class="p-role">Accenture Facilitator</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar" style="background:#A100FF">CF</div><div class="p-info"><div class="p-name">Camilla Freddi</div><div class="p-role">Accenture Facilitator</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
-    <div class="p-card"><div class="p-avatar" style="background:#A100FF">FF</div><div class="p-info"><div class="p-name">Fabio Luigi Filippelli</div><div class="p-role">Accenture Facilitator Support</div><div class="p-status status-confirmed">● Confirmed</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar" style="background:#A100FF">WR</div><div class="p-info"><div class="p-name">Wim Roelfs</div><div class="p-role">Accenture Facilitator</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar" style="background:#A100FF">CF</div><div class="p-info"><div class="p-name">Camilla Freddi</div><div class="p-role">Accenture Facilitator</div></div><div class="p-flag">🌐</div></div>
+    <div class="p-card"><div class="p-avatar" style="background:#A100FF">FF</div><div class="p-info"><div class="p-name">Fabio Luigi Filippelli</div><div class="p-role">Accenture Facilitator Support</div></div><div class="p-flag">🌐</div></div>
   </div>
 </div>
 
@@ -711,11 +755,18 @@ const ratingLabels = {
   action: ['','Hard to act on','Some useful elements','Actionable','Very actionable','Ready to go Monday']
 };
 
-function showSection(id) {
+function showSection(id, trigger) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-btn').forEach(t => t.classList.remove('active'));
   document.getElementById('section-' + id).classList.add('active');
-  event.currentTarget.classList.add('active');
+  // activate matching buttons in both navs
+  document.querySelectorAll('.nav-tab, .bnav-btn').forEach(btn => {
+    if (btn.getAttribute('onclick') && btn.getAttribute('onclick').includes("'" + id + "'")) {
+      btn.classList.add('active');
+    }
+  });
+  window.scrollTo(0,0);
 }
 
 function showDay(id) {
