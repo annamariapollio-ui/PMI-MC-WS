@@ -186,38 +186,39 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 
 /* MOBILE OVERRIDES */
 @media(max-width:700px){
-  body{padding-bottom:68px}
+  body{padding-bottom:72px}
   .nav .nav-tabs{display:none}
   .nav-inner{justify-content:flex-start;gap:10px}
   .bottom-nav{display:block}
+  .hero{padding:32px 16px 28px}
+  .hero-title{font-size:28px}
+  .hero-sub{font-size:13px;margin-bottom:24px}
+  .hero-pills{gap:6px}
+  .hero-pill{font-size:12px;padding:5px 11px}
   .session-item{grid-template-columns:50px 1fr;gap:8px}
   .s-dur{display:none}
   .market-cards{grid-template-columns:1fr}
-  .hero{padding:40px 16px 36px}
-  .hero-title{font-size:30px}
-  .hero-sub{font-size:14px}
-  .hero-pills{gap:7px}
-  .hero-pill{font-size:12px;padding:6px 12px}
   .day-header{flex-direction:column;align-items:flex-start;gap:6px}
-  .section{padding:24px 16px}
-  .participant-grid{grid-template-columns:1fr 1fr;gap:8px}
-  .p-card{padding:10px 12px;gap:9px}
-  .p-avatar{width:32px;height:32px;font-size:11px}
-  .p-name{font-size:13px}
-  .p-role{font-size:11px}
-  .p-flag{font-size:14px}
+  .section{padding:20px 14px}
+  .participant-grid{grid-template-columns:1fr;gap:0;border:1px solid var(--mc-border);border-radius:var(--radius);overflow:hidden}
+  .p-card{border:none;border-bottom:1px solid var(--mc-border);border-radius:0;padding:12px 14px}
+  .p-card:last-child{border-bottom:none}
+  .p-avatar{width:34px;height:34px;font-size:11px;flex-shrink:0}
+  .p-name{font-size:14px}
+  .p-role{font-size:12px}
+  .p-flag{font-size:16px}
   .logistics-grid{grid-template-columns:1fr}
   .prep-cards{grid-template-columns:1fr 1fr}
   .rating-section{padding:16px}
   .day-tabs{gap:6px}
-  .day-tab{padding:8px 14px;font-size:13px}
+  .day-tab{padding:8px 12px;font-size:12px}
   .section-title{font-size:22px}
   .diag-intro{padding:16px}
   .mkt-header{padding:14px 16px 10px}
   .mkt-body{padding:0 16px 16px}
+  .region-title{margin:20px 0 0}
 }
 @media(max-width:380px){
-  .participant-grid{grid-template-columns:1fr}
   .prep-cards{grid-template-columns:1fr}
 }
 </style>
@@ -231,11 +232,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
       <span class="nav-title">Acquisition Workshop</span>
     </div>
     <div class="nav-tabs">
-      <button class="nav-tab active" onclick="showSection('participants',this)">👥 Participants</button>
-      <button class="nav-tab" onclick="showSection('agenda',this)">📋 Agenda</button>
-      <button class="nav-tab" onclick="showSection('diagnostic',this)">🔍 Diagnostic</button>
+      <button class="nav-tab active" onclick="showSection('agenda',this)">📋 Agenda</button>
       <button class="nav-tab" onclick="showSection('logistics',this)">✈️ Logistics</button>
-      <button class="nav-tab" onclick="showSection('prep',this)">✅ Prepare</button>
+      <button class="nav-tab" onclick="showSection('participants',this)">👥 Participants</button>
+      <button class="nav-tab" onclick="showSection('diagnostic',this)">🔍 Diagnostic</button>
       <button class="nav-tab" onclick="showSection('feedback',this)">💬 Feedback</button>
     </div>
   </div>
@@ -244,11 +244,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 <!-- BOTTOM NAV -->
 <div class="bottom-nav">
   <div class="bottom-nav-inner">
-    <button class="bnav-btn active" onclick="showSection('participants',this)"><span class="bnav-icon">👥</span><span class="bnav-label">People</span></button>
-    <button class="bnav-btn" onclick="showSection('agenda',this)"><span class="bnav-icon">📋</span><span class="bnav-label">Agenda</span></button>
-    <button class="bnav-btn" onclick="showSection('diagnostic',this)"><span class="bnav-icon">🔍</span><span class="bnav-label">Insights</span></button>
+    <button class="bnav-btn active" onclick="showSection('agenda',this)"><span class="bnav-icon">📋</span><span class="bnav-label">Agenda</span></button>
     <button class="bnav-btn" onclick="showSection('logistics',this)"><span class="bnav-icon">✈️</span><span class="bnav-label">Logistics</span></button>
-    <button class="bnav-btn" onclick="showSection('prep',this)"><span class="bnav-icon">✅</span><span class="bnav-label">Prepare</span></button>
+    <button class="bnav-btn" onclick="showSection('participants',this)"><span class="bnav-icon">👥</span><span class="bnav-label">People</span></button>
+    <button class="bnav-btn" onclick="showSection('diagnostic',this)"><span class="bnav-icon">🔍</span><span class="bnav-label">Insights</span></button>
     <button class="bnav-btn" onclick="showSection('feedback',this)"><span class="bnav-icon">💬</span><span class="bnav-label">Feedback</span></button>
   </div>
 </div>
@@ -267,7 +266,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 </div>
 
 <!-- PARTICIPANTS -->
-<div id="section-participants" class="section active">
+<div id="section-participants" class="section">
   <h2 class="section-title">Who's in the room</h2>
   <p class="section-sub">7 markets across Regions 2, 3 and 4 — CX leads, brand engagement and regional experts.</p>
 
@@ -327,7 +326,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
 </div>
 
 <!-- AGENDA -->
-<div id="section-agenda" class="section">
+<div id="section-agenda" class="section active">
   <h2 class="section-title">3-Day Programme</h2>
   <p class="section-sub">Each day builds on the previous — from building awareness to creating the plan to committing to it.</p>
   <div class="day-tabs">
@@ -621,32 +620,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
   </div>
 </div>
 
-<!-- PREP -->
-<div id="section-prep" class="section">
-  <div class="prep-hero">
-    <h2>One thing. That's it.</h2>
-    <p>Come ready with your "Steal With Pride" slide — one big idea from your market that could move the needle for someone else in the room.</p>
-  </div>
-  <div class="prep-cards">
-    <div class="prep-card"><div class="prep-icon">💡</div><h4>THE IDEA</h4><p>What did you do? Present the cool thing that worked — one tactic, one initiative, one channel moment.</p></div>
-    <div class="prep-card"><div class="prep-icon">🚀</div><h4>WHY IT WORKED</h4><p>Key result or impact. Keep it concrete — a number, a rate, a behaviour change you observed.</p></div>
-    <div class="prep-card"><div class="prep-icon">⏱️</div><h4>YOUR TIME</h4><p>20 min total. <strong>15' present + 5' Q&A.</strong> One slide only — no exceptions.</p></div>
-    <div class="prep-card"><div class="prep-icon">🎯</div><h4>THE TRANSFER</h4><p>Focus on the idea that others can steal — not the market context. Others need to be able to use it.</p></div>
-  </div>
-  <div class="prep-rules">
-    <span class="prep-rule">1 SLIDE ONLY</span>
-    <span class="prep-rule">SHORT & PUNCHY</span>
-    <span class="prep-rule">NO 20-SLIDE DECKS</span>
-    <span class="prep-rule">NO MARKET OVERVIEWS</span>
-    <span class="prep-rule">MAKE IT VISUAL</span>
-    <span class="prep-rule">THINK ABOUT WHAT TRANSFERS</span>
-  </div>
-  <div class="deadline-box">
-    <span>📬 Send your slide to <strong>Carine</strong> before <strong>27 May 2026</strong> so the team can prepare material ahead of the workshop.</span>
-    <span style="font-size:13px;opacity:.8">Carine.Friou@pmi.com</span>
-  </div>
-</div>
-
 <!-- FEEDBACK -->
 <div id="section-feedback" class="section">
   <h2 class="section-title">Share Your Feedback</h2>
@@ -704,7 +677,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
           <span class="chip" onclick="toggleChip(this,'highlight')">Activation Roadmap</span>
           <span class="chip" onclick="toggleChip(this,'highlight')">Peer connections</span>
           <span class="chip" onclick="toggleChip(this,'highlight')">Data & consumer insights</span>
+          <span class="chip other-chip" onclick="toggleChip(this,'highlight')">Other…</span>
         </div>
+        <input type="text" class="form-input other-input" id="other-highlight" placeholder="Tell us more…" style="display:none;margin-top:10px">
       </div>
     </div>
 
@@ -718,7 +693,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--mc-smoke);color:var(--mc-
           <span class="chip" onclick="toggleChip(this,'improve')">More focused agenda</span>
           <span class="chip" onclick="toggleChip(this,'improve')">Stronger follow-up plan</span>
           <span class="chip" onclick="toggleChip(this,'improve')">More time for roadmapping</span>
+          <span class="chip other-chip" onclick="toggleChip(this,'improve')">Other…</span>
         </div>
+        <input type="text" class="form-input other-input" id="other-improve" placeholder="Tell us more…" style="display:none;margin-top:10px">
       </div>
     </div>
 
@@ -800,6 +777,13 @@ function setRating(key, val) {
 
 function toggleChip(el, group) {
   el.classList.toggle('selected');
+  const isOther = el.classList.contains('other-chip');
+  const otherInput = document.getElementById('other-' + group);
+  if (isOther && otherInput) {
+    otherInput.style.display = el.classList.contains('selected') ? 'block' : 'none';
+    if (!el.classList.contains('selected')) otherInput.value = '';
+    return;
+  }
   const val = el.textContent;
   const idx = chips[group].indexOf(val);
   if (idx > -1) chips[group].splice(idx, 1);
@@ -815,8 +799,8 @@ async function submitFeedback() {
     'Overall rating': ratings['overall'] || 'Not rated',
     'Content usefulness': ratings['content'] || 'Not rated',
     'Actionability': ratings['action'] || 'Not rated',
-    'Highlights': chips['highlight'].join(', ') || '—',
-    'Improvements': chips['improve'].join(', ') || '—',
+    'Highlights': (() => { const v = document.getElementById('other-highlight').value.trim(); const all = [...chips['highlight']]; if(v) all.push('Other: '+v); return all.join(', ') || '—'; })(),
+    'Improvements': (() => { const v = document.getElementById('other-improve').value.trim(); const all = [...chips['improve']]; if(v) all.push('Other: '+v); return all.join(', ') || '—'; })(),
     'Takeaway': document.getElementById('takeaway').value.trim() || '—',
     'Open feedback': document.getElementById('opentext').value.trim() || '—'
   };
